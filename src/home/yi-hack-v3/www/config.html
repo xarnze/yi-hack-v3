@@ -303,6 +303,12 @@ function apply() {
 		ftpd_enabled = "no";
 	}
 
+	if (document.getElementById("DROPBEAR_yes").checked == true) {
+		dropbear_enabled = "yes";
+	} else {
+		dropbear_enabled = "no";
+	}
+
 	if (document.getElementById("ALARM_yes").checked == true) {
 		alarm_enabled = "yes";
 	} else {
