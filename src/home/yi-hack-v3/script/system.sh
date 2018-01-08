@@ -47,6 +47,12 @@ elif [ -f "/home/hd1/yi-hack-v3/startup.sh" ]; then
 fi
 
 if [[ $(get_config ALARM) == "yes" ]] ; then
+	if [ ! -d "/home/yi-hack-v3/www/img" ]; then
+		mkdir /home/yi-hack-v3/www/img
+	fi
+	if [ ! -f "/home/yi-hack-v3/www/img/last.jpg" ]; then
+		ln -s /tmp/sd/record/last.jpg /home/yi-hack-v3/www/img/last.jpg
+	fi
 	if [ -f "/home/yi-hack-v3/script/alarm.sh" ]; then
 		sh /home/yi-hack-v3/script/alarm.sh &
 	fi
