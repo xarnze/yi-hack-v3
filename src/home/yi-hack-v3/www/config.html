@@ -309,7 +309,7 @@ function apply() {
 		alarm_enabled = "no";
 	}
 
-	message = "SAVE_CONFIG\nproxychainsng_enabled=" + proxychainsng_enabled + "\nhttpd_enabled=" + httpd_enabled + "\ntelnetd_enabled=" + telnetd_enabled + "\nftpd_enabled=" + ftpd_enabled + "\ndropbear_enabled=" + dropbear_enabled + "\nalamr_enabled=" + alarm_enabled + "\nhostname=" + document.getElementById("hostname_text").value + "\TELEGRAM_BOT_TOKEN=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value + "\TELEGRAM_CHAT_ID=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value;
+	message = "SAVE_CONFIG\nproxychainsng_enabled=" + proxychainsng_enabled + "\nhttpd_enabled=" + httpd_enabled + "\ntelnetd_enabled=" + telnetd_enabled + "\nftpd_enabled=" + ftpd_enabled + "\ndropbear_enabled=" + dropbear_enabled + "\nalamr_enabled=" + alarm_enabled + "\nhostname=" + document.getElementById("hostname_text").value + "\nTELEGRAM_BOT_TOKEN=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value + "\nTELEGRAM_CHAT_ID=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value;
 
 	socket_info.send(message);
 }
