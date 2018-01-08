@@ -50,7 +50,7 @@
 		<div class="page-header">
 			<h1>About yi-hack-v3</h1>
 		</div>
-		
+
 		<p>Yi-hack-v3 unlocks features not available with the official Yi camera firmware. Features implemented include:</p>
 		<ul>
 			<li>Telnet Server</li>
@@ -66,7 +66,7 @@
 			<li>Yi Dome</li>
 			<li>Yi 1080p Dome</li>
 		</ul>
-	
+
 		<h2>Version</h2>
 		<dl class="dl-horizontal">
 			<dt>Camera</dt>
@@ -76,10 +76,13 @@
 			<dt>yi-hack-v3 Firmware</dt>
 			<dd><div class=hack_version></div></dd>
 		</dl>
-		
+
 		<h2>More Information</h2>
 		<a href="https://github.com/shadow-1/yi-hack-v3">https://github.com/shadow-1/yi-hack-v3</a>
-			
+
+		<h2>Last picture/video</h2>
+		<img src="img/last.jpg" alt="Last" class="img-thumbnail">
+
 	</div>
 
 	<!-- Bootstrap core JavaScript
@@ -120,7 +123,7 @@ function get_appropriate_ws_url()
 }
 
 /* yi-hack-v3_info protocol */
-	
+
 	var socket_info;
 
 	if (typeof MozWebSocket != "undefined") {
@@ -134,7 +137,7 @@ function get_appropriate_ws_url()
 	try {
 		socket_info.onopen = function() {
 			init();
-		} 
+		}
 
 		socket_info.onmessage = function got_packet(msg) {
 			jso = JSON.parse(msg.data);
@@ -147,17 +150,17 @@ function get_appropriate_ws_url()
 				for (var i = 0, max = CameraElements.length; i < max; i++) {
 					CameraElements[i].textContent = jso.camera;
 				}
-				
+
 				document.getElementsByClassName("base_version")[0].textContent = jso.base_version;
 				document.getElementsByClassName("hack_version")[0].textContent = jso.hack_version;
 			}
-		} 
+		}
 
 		socket_info.onclose = function(){
-			
+
 		}
 	} catch(exception) {
-		alert('<p>Error' + exception);  
+		alert('<p>Error' + exception);
 	}
 
 function init() {
@@ -165,7 +168,7 @@ function init() {
 }
 
 </script>
-	
+
 </body>
 
 </html>

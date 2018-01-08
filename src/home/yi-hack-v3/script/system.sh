@@ -45,3 +45,10 @@ if [ -f "/tmp/sd/yi-hack-v3/startup.sh" ]; then
 elif [ -f "/home/hd1/yi-hack-v3/startup.sh" ]; then
 	/home/hd1/yi-hack-v3/startup.sh
 fi
+
+if [[ $(get_config ALARM) == "yes" ]] ; then
+	if [ -f "/home/yi-hack-v3/script/alarm.sh" ]; then
+		sh /home/yi-hack-v3/script/alarm.sh &
+	fi
+fi
+
