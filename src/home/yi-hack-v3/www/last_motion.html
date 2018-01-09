@@ -6,7 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<meta http-equiv="refresh" content="30;url=/index.html" />
 	<script src="/js/lws-common.js"></script>
 	<title></title>
 	<!-- Bootstrap core CSS -->
@@ -41,18 +40,27 @@
 						<li><a href="proxy_config.html">ProxyChains-ng</a></li>
 						<li><a href="config.html">System Config</a></li>
 						<li><a href="about.html">About</a></li>
-						<li><a href="last_motion.html">Last motion</a></li>
-						<li class="active"><a href="reboot.html">Reboot</a></li>
+						<li class="active"><a href="last_motion.html">Last motion</a></li>
+						<li><a href="reboot.html">Reboot</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div><!--/.container-fluid -->
 		</nav>
 
+		<!-- Main component for a primary marketing message or call to action -->
 		<div class="page-header">
-			<h1>Reboot Camera</h1>
+			<h1>Last motion</h1>
 		</div>
-		<div class="alert alert-success" role="alert">
-			<Strong>Camera Rebooting.</strong> Refreshing in 30 seconds...
+
+		<h2>Last picture:</h2>
+		<img src="img/last.jpg" alt="Last" class="img-thumbnail">
+
+		<h2>Last video:</h2>
+		<div class="jumbotron">
+			<video width="100%" poster="img/last.jpg" id="videoPlayer" autoplay loop>
+				<source src="img/last.mp4" type="video/mp4">
+				Your browser does not support the video tag.
+			</video>
 		</div>
 	</div>
 
@@ -60,14 +68,12 @@
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-	<!--<script>window.jQuery || document.write('<script src="../js/vendor/jquery.min.js"><\/script>')</script>-->
+	<!--<script>window.jQuery || document.write('<script src="js/vendor/jquery.min.js"><\/script>')</script>-->
 	<script src="/js/bootstrap.min.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 
-	<script>
-
-var info_num;
+<script>
 
 function get_appropriate_ws_url()
 {
@@ -109,7 +115,7 @@ function get_appropriate_ws_url()
 
 	try {
 		socket_info.onopen = function() {
-			init_info();
+			init();
 		}
 
 		socket_info.onmessage = function got_packet(msg) {
@@ -118,26 +124,14 @@ function get_appropriate_ws_url()
 			if (jso.message == "SEND_CAM_INFO") {
 				document.title = jso.camera;
 
-				document.getElementsByClassName("camera")[0].innerHTML = jso.camera;
-			} else if (jso.message == "SEND_NOTIFICATION") {
-				var message;
+				var CameraElements = document.getElementsByClassName("camera");
 
-				switch (jso.n_type) {
-					case "0":
-						message = "<div class=\"alert alert-danger\" role=\"alert\"><strong>ERROR:</strong> " + jso.n_message + "</div>";
-						document.getElementById("error").innerHTML += message;
-						break;
-					case "1":
-						message = "<div class=\"alert alert-warning\" role=\"alert\"><strong>WARNING:</strong> " + jso.n_message + "</div>";
-						document.getElementById("error").innerHTML += message;
-						break;
-					case "2":
-						message = "<div class=\"alert alert-success\" role=\"alert\" id=\"" + info_num + "\">" + jso.n_message + "</div>";
-						document.getElementById("information").innerHTML += message;
-						setTimeout(remove_information, 2000, info_num);
-						info_num++;
-						break;
+				for (var i = 0, max = CameraElements.length; i < max; i++) {
+					CameraElements[i].textContent = jso.camera;
 				}
+
+				document.getElementsByClassName("base_version")[0].textContent = jso.base_version;
+				document.getElementsByClassName("hack_version")[0].textContent = jso.hack_version;
 			}
 		}
 
@@ -148,46 +142,8 @@ function get_appropriate_ws_url()
 		alert('<p>Error' + exception);
 	}
 
-function init_info() {
-	info_num = 0;
+function init() {
 	socket_info.send("SEND_CAM_INFO\n");
-}
-
-function remove_information(x) {
-	var element = document.getElementById(x);
-	element.parentNode.removeChild(element);
-}
-
-/* yi-hack-v3_command protocol */
-
-	var socket_command;
-
-	if (typeof MozWebSocket != "undefined") {
-		socket_command = new MozWebSocket(get_appropriate_ws_url(),
-				   "yi-hack-v3_command");
-	} else {
-		socket_command = new WebSocket(get_appropriate_ws_url(),
-				   "yi-hack-v3_command");
-	}
-
-	try {
-		socket_command.onopen = function() {
-			init_command();
-		}
-
-		socket_command.onmessage = function got_packet(msg) {
-
-		}
-
-		socket_command.onclose = function(){
-
-		}
-	} catch(exception) {
-		alert('<p>Error' + exception);
-	}
-
-function init_command() {
-	socket_command.send("REBOOT\n");
 }
 
 </script>
