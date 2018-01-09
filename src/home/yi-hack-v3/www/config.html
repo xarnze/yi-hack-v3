@@ -118,11 +118,11 @@
 				<input type="radio" name="ALARM" id="ALARM_no" value="no"> No
 			</label>
 		</div>
-		<div class="form-group form-inline">
+		<div class="form-group form-inline" id="telegram_bot_token" style="display:none">
 			<label class="col-sm-3 control-label">TELEGRAM_BOT_TOKEN</label>
 			<input type="text" class="form-control" id="TELEGRAM_BOT_TOKEN_text">
 		</div>
-		<div class="form-group form-inline">
+		<div class="form-group form-inline hidden" id="telegram_bot_chat_id" style="display:none">
 			<label class="col-sm-3 control-label">TELEGRAM_CHAT_ID</label>
 			<input type="text" class="form-control" id="TELEGRAM_CHAT_ID_text">
 		</div>
@@ -144,6 +144,9 @@
 <script>
 
 document.getElementById('apply').onclick = apply;
+
+document.getElementById('ALARM_yes').onclick = show_telegram_bot_elements;
+document.getElementById('ALARM_no').onclick = hide_telegram_bot_elements;
 var info_num;
 
 function get_appropriate_ws_url()
@@ -232,8 +235,10 @@ function get_appropriate_ws_url()
 
 				if (jso.alarm_enabled == "yes") {
 					document.getElementById("ALARM_yes").checked = true;
+					show_telegram_bot_elements();
 				} else if (jso.alarm_enabled == "no") {
 					document.getElementById("ALARM_no").checked = true;
+					hide_telegram_bot_elements();
 				}
 			} else if (jso.message == "SEND_NOTIFICATION") {
 				var message;
@@ -325,6 +330,15 @@ function remove_information(x) {
 	element.parentNode.removeChild(element);
 }
 
+function show_telegram_bot_elements() {
+	document.getElementById('telegram_bot_token').style.display = 'block';
+	document.getElementById('telegram_bot_chat_id').style.display = 'block';
+}
+
+function hide_telegram_bot_elements() {
+	document.getElementById('telegram_bot_token').style.display = 'none';
+	document.getElementById('telegram_bot_chat_id').style.display = 'none';
+}
 </script>
 
 </body>
