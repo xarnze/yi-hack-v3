@@ -46,15 +46,25 @@ elif [ -f "/home/hd1/yi-hack-v3/startup.sh" ]; then
 	/home/hd1/yi-hack-v3/startup.sh
 fi
 
+# Adding some symlinks for the last picture/video
+if [ ! -d "/home/yi-hack-v3/www/img" ]; then
+	mkdir /home/yi-hack-v3/www/img
+fi
+if [ ! -f "/home/yi-hack-v3/www/img/last.jpg" ]; then
+	ln -s /tmp/sd/record/last.jpg /home/yi-hack-v3/www/img/last.jpg
+fi
+if [ ! -f "/home/yi-hack-v3/www/img/last.mp4" ]; then
+	ln -s /tmp/sd/record/last.mp4 /home/yi-hack-v3/www/img/last.mp4
+fi
+
+#Check if we use the telegram functionality
 if [[ $(get_config ALARM) == "yes" ]] ; then
-	if [ ! -d "/home/yi-hack-v3/www/img" ]; then
-		mkdir /home/yi-hack-v3/www/img
-	fi
-	if [ ! -f "/home/yi-hack-v3/www/img/last.jpg" ]; then
-		ln -s /tmp/sd/record/last.jpg /home/yi-hack-v3/www/img/last.jpg
-	fi
 	if [ -f "/home/yi-hack-v3/script/alarm.sh" ]; then
 		sh /home/yi-hack-v3/script/alarm.sh &
+	fi
+else
+	if [ -f "/home/yi-hack-v3/script/last_motion.sh" ]; then
+		sh /home/yi-hack-v3/script/last_motion.sh &
 	fi
 fi
 
