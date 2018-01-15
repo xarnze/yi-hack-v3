@@ -3,15 +3,15 @@
 CONF_FILE="/yi-hack-v3/etc/system.conf"
 
 if [ -d "/usr/yi-hack-v3" ]; then
-        YI_HACK_V3_PREFIX="/usr"
+	YI_HACK_V3_PREFIX="/usr"
 elif [ -d "/home/yi-hack-v3" ]; then
-        YI_HACK_V3_PREFIX="/home"
+	YI_HACK_V3_PREFIX="/home"
 fi
 
 get_config()
 {
-        key=$1
-        grep $1 $YI_HACK_V3_PREFIX$CONF_FILE | cut -d "=" -f2
+	key=$1
+	grep $1 $YI_HACK_V3_PREFIX$CONF_FILE | cut -d "=" -f2
 }
 
 if [ -d "/usr/yi-hack-v3" ]; then
@@ -37,7 +37,7 @@ if [[ $(get_config FTPD) == "yes" ]] ; then
 fi
 
 if [[ $(get_config DROPBEAR) == "yes" ]] ; then
-        dropbear -R
+	dropbear -R
 fi
 
 if [ -f "/tmp/sd/yi-hack-v3/startup.sh" ]; then
