@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright 2018 Vladimir Dronnokov & Frank van der Stad
+# Copyright 2018 Vladimir Dronnikov & Frank van der Stad
 # GPL
 source ./include_functions.sh
 
