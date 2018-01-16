@@ -23,7 +23,7 @@ photo() {
 	cp $1 /tmp/sd/record/last.jpg
 	if [ ! -z "$TELEGRAM_BOT_TOKEN" ]
 	then
-		curl -F photo="@$1" "https://api.telegram.org/bot${TELEGRAM_BOT_
+		curl -F photo="@$1" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto?chat_id=${TELEGRAM_CHAT_ID}&caption=$message&disable_notification=${TELEGRAM_SILENT}"
 	fi
 }
 
@@ -32,7 +32,7 @@ video() {
 	cp $1 /tmp/sd/record/last.mp4
 	if [ ! -z "$TELEGRAM_BOT_TOKEN" ]
 	then
-		curl -F video="@$1" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/s
+		curl -F video="@$1" "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendVideo?chat_id=${TELEGRAM_CHAT_ID}&caption=$message&disable_notification=${TELEGRAM_SILENT}"
 	fi
 }
 
