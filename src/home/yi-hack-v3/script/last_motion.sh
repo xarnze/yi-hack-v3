@@ -1,7 +1,12 @@
 #!/bin/sh
 # Copyright 2018 Vladimir Dronnikov & Frank van der Stad
 # GPL
-source ./include_functions.sh
+if [ -d "/usr/yi-hack-v3" ]; then
+	YI_HACK_V3_PREFIX="/usr"
+elif [ -d "/home/yi-hack-v3" ]; then
+	YI_HACK_V3_PREFIX="/home"
+fi
+source $YI_HACK_V3_PREFIX/yi-hack-v3/script/include_functions.sh
 
 CAMERA_NAME=`more $YI_HACK_V3_PREFIX/yi-hack-v3/etc/hostname`;
 
