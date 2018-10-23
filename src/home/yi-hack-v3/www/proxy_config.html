@@ -40,6 +40,7 @@
 						<li class="active"><a href="proxy_config.html">ProxyChains-ng</a></li>
 						<li><a href="config.html">System Config</a></li>
 						<li><a href="about.html">About</a></li>
+						<li><a href="last_motion.html">Last motion</a></li>
 						<li><a href="reboot.html">Reboot</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
@@ -104,7 +105,7 @@ function get_appropriate_ws_url()
 }
 
 /* yi-hack-v3_info protocol */
-	
+
 	var socket_info;
 
 	if (typeof MozWebSocket != "undefined") {
@@ -118,14 +119,14 @@ function get_appropriate_ws_url()
 	try {
 		socket_info.onopen = function() {
 			init();
-		} 
+		}
 
 		socket_info.onmessage = function got_packet(msg) {
 			jso = JSON.parse(msg.data);
 
 			if (jso.message == "SEND_CAM_INFO") {
 				document.title = jso.camera;
-				
+
 				document.getElementsByClassName("camera")[0].innerHTML = jso.camera;
 			} else if (jso.message == "SEND_PROXYCHAINSNG_CONFIG") {
 				document.getElementById("PROXYCHAINSNG_config").value += jso.config;
@@ -149,13 +150,13 @@ function get_appropriate_ws_url()
 						break;
 				}
 			}
-		} 
+		}
 
 		socket_info.onclose = function(){
-			
+
 		}
 	} catch(exception) {
-		alert('<p>Error' + exception);  
+		alert('<p>Error' + exception);
 	}
 
 function init() {
@@ -203,7 +204,7 @@ function remove_information(x) {
 }
 
 </script>
-	
+
 </body
 
 </html>

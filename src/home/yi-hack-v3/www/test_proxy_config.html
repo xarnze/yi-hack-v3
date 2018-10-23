@@ -40,6 +40,7 @@
 						<li class="active"><a href="proxy_config.html">ProxyChains-ng</a></li>
 						<li><a href="config.html">System Config</a></li>
 						<li><a href="about.html">About</a></li>
+						<li><a href="last_motion.html">Last motion</a></li>
 						<li><a href="reboot.html">Reboot</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
@@ -58,7 +59,7 @@
 		<div id="error"></div>
 		<div id="warning"></div>
 		<div id="information"></div>
-		
+
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
@@ -168,7 +169,7 @@ function get_appropriate_ws_url()
 }
 
 /* yi-hack-v3_info protocol */
-	
+
 	var socket_info;
 
 	if (typeof MozWebSocket != "undefined") {
@@ -182,7 +183,7 @@ function get_appropriate_ws_url()
 	try {
 		socket_info.onopen = function() {
 			init();
-		} 
+		}
 
 		socket_info.onmessage = function got_packet(msg) {
 			jso = JSON.parse(msg.data);
@@ -192,13 +193,13 @@ function get_appropriate_ws_url()
 
 				document.getElementsByClassName("camera")[0].textContent = jso.camera;
 			}
-		} 
+		}
 
 		socket_info.onclose = function(){
-			
+
 		}
 	} catch(exception) {
-		alert('<p>Error' + exception);  
+		alert('<p>Error' + exception);
 	}
 
 function init() {
@@ -206,7 +207,7 @@ function init() {
 }
 
 /* yi-hack-v3_test_proxy protocol */
-	
+
 	var socket_test_proxy;
 
 	if (typeof MozWebSocket != "undefined") {
@@ -220,7 +221,7 @@ function init() {
 	try {
 		socket_test_proxy.onopen = function() {
 			init_test_proxy();
-		} 
+		}
 
 		socket_test_proxy.onmessage = function got_packet(msg) {
 			jso = JSON.parse(msg.data);
@@ -350,13 +351,13 @@ function init() {
 			} else if (jso.message == "SEND_PROGRESS") {
 				document.getElementsByClassName("progress-bar")[0].setAttribute("style","width:" + jso.percentage + "%");
 			}
-		} 
+		}
 
 		socket_test_proxy.onclose = function(){
-			
+
 		}
 	} catch(exception) {
-		alert('<p>Error' + exception);  
+		alert('<p>Error' + exception);
 	}
 
 function init_test_proxy() {
@@ -370,7 +371,7 @@ function remove_information(x) {
 }
 
 </script>
-	
+
 </body>
 
 </html>

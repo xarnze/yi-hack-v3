@@ -40,6 +40,7 @@
 						<li><a href="proxy_config.html">ProxyChains-ng</a></li>
 						<li class="active"><a href="config.html">System Config</a></li>
 						<li><a href="about.html">About</a></li>
+						<li><a href="last_motion.html">Last motion</a></li>
 						<li><a href="reboot.html">Reboot</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
@@ -108,11 +109,30 @@
 			<input type="text" class="form-control" id="hostname_text">
 		</div>
 
+		<hr/>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Alarm Enabled</label>
+			<label class="radio-inline">
+				<input type="radio" name="ALARM" id="ALARM_yes" value="yes"> Yes
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="ALARM" id="ALARM_no" value="no"> No
+			</label>
+		</div>
+		<div class="form-group form-inline" id="telegram_bot_token" style="display:none">
+			<label class="col-sm-3 control-label">TELEGRAM_BOT_TOKEN</label>
+			<input type="text" class="form-control" id="TELEGRAM_BOT_TOKEN_text">
+		</div>
+		<div class="form-group form-inline" id="telegram_bot_chat_id" style="display:none">
+			<label class="col-sm-3 control-label">TELEGRAM_CHAT_ID</label>
+			<input type="text" class="form-control" id="TELEGRAM_CHAT_ID_text">
+		</div>
+
 		<div class="button-wrapper">
 			<input class="btn btn-primary" id="apply" type="submit" value="Apply">
 		</div>
 	</div>
-	
+
 	<!-- Bootstrap core JavaScript
 	================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -121,10 +141,13 @@
 	<script src="/js/bootstrap.min.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
-	
+
 <script>
 
 document.getElementById('apply').onclick = apply;
+
+document.getElementById('ALARM_yes').onclick = show_telegram_bot_elements;
+document.getElementById('ALARM_no').onclick = hide_telegram_bot_elements;
 var info_num;
 
 function get_appropriate_ws_url()
@@ -154,7 +177,7 @@ function get_appropriate_ws_url()
 }
 
 /* yi-hack-v3_info protocol */
-	
+
 	var socket_info;
 
 	if (typeof MozWebSocket != "undefined") {
@@ -168,16 +191,18 @@ function get_appropriate_ws_url()
 	try {
 		socket_info.onopen = function() {
 			init();
-		} 
+		}
 
 		socket_info.onmessage = function got_packet(msg) {
 			jso = JSON.parse(msg.data);
 
 			if (jso.message == "SEND_CAM_INFO") {
 				document.title = jso.camera;
-				
+
 				document.getElementsByClassName("camera")[0].textContent = jso.camera;
 				document.getElementById("hostname_text").value = jso.hostname;
+				document.getElementById("TELEGRAM_BOT_TOKEN_text").value = jso.TELEGRAM_BOT_TOKEN;
+				document.getElementById("TELEGRAM_CHAT_ID_text").value = jso.TELEGRAM_CHAT_ID;
 			} else if (jso.message == "SEND_CONFIG") {
 				if (jso.proxychainsng_enabled == "yes") {
 					document.getElementById("PROXYCHAINSNG_yes").checked = true;
@@ -208,6 +233,14 @@ function get_appropriate_ws_url()
 				} else if (jso.dropbear_enabled == "no") {
 					document.getElementById("DROPBEAR_no").checked = true;
 				}
+
+				if (jso.alarm_enabled == "yes") {
+					document.getElementById("ALARM_yes").checked = true;
+					show_telegram_bot_elements();
+				} else if (jso.alarm_enabled == "no") {
+					document.getElementById("ALARM_no").checked = true;
+					hide_telegram_bot_elements();
+				}
 			} else if (jso.message == "SEND_NOTIFICATION") {
 				var message;
 
@@ -228,13 +261,13 @@ function get_appropriate_ws_url()
 						break;
 				}
 			}
-		} 
+		}
 
 		socket_info.onclose = function(){
-			
+
 		}
 	} catch(exception) {
-		alert('<p>Error' + exception);  
+		alert('<p>Error' + exception);
 	}
 
 function init() {
@@ -250,25 +283,26 @@ function apply() {
 	var telnetd_enabled;
 	var ftpd_enabled;
 	var dropbear_enabled;
+	var alarm_enabled;
 
 	if (document.getElementById("PROXYCHAINSNG_yes").checked == true) {
 		proxychainsng_enabled = "yes";
 	} else {
 		proxychainsng_enabled = "no";
 	}
-	
+
 	if (document.getElementById("HTTPD_yes").checked == true) {
 		httpd_enabled = "yes";
 	} else {
 		httpd_enabled = "no";
 	}
-	
+
 	if (document.getElementById("TELNETD_yes").checked == true) {
 		telnetd_enabled = "yes";
 	} else {
 		telnetd_enabled = "no";
 	}
-	
+
 	if (document.getElementById("FTPD_yes").checked == true) {
 		ftpd_enabled = "yes";
 	} else {
@@ -276,12 +310,18 @@ function apply() {
 	}
 
 	if (document.getElementById("DROPBEAR_yes").checked == true) {
-                dropbear_enabled = "yes";
-        } else {
-                dropbear_enabled = "no";
-        }
-	
-	message = "SAVE_CONFIG\nproxychainsng_enabled=" + proxychainsng_enabled + "\nhttpd_enabled=" + httpd_enabled + "\ntelnetd_enabled=" + telnetd_enabled + "\nftpd_enabled=" + ftpd_enabled + "\ndropbear_enabled=" + dropbear_enabled + "\nhostname=" + document.getElementById("hostname_text").value;
+		dropbear_enabled = "yes";
+	} else {
+		dropbear_enabled = "no";
+	}
+
+	if (document.getElementById("ALARM_yes").checked == true) {
+		alarm_enabled = "yes";
+	} else {
+		alarm_enabled = "no";
+	}
+
+	message = "SAVE_CONFIG\nproxychainsng_enabled=" + proxychainsng_enabled + "\nhttpd_enabled=" + httpd_enabled + "\ntelnetd_enabled=" + telnetd_enabled + "\nftpd_enabled=" + ftpd_enabled + "\ndropbear_enabled=" + dropbear_enabled + "\nalarm_enabled=" + alarm_enabled + "\nhostname=" + document.getElementById("hostname_text").value + "\nTELEGRAM_BOT_TOKEN=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value + "\nTELEGRAM_CHAT_ID=" + document.getElementById("TELEGRAM_BOT_TOKEN_text").value;
 
 	socket_info.send(message);
 }
@@ -291,6 +331,15 @@ function remove_information(x) {
 	element.parentNode.removeChild(element);
 }
 
+function show_telegram_bot_elements() {
+	document.getElementById('telegram_bot_token').style.display = 'block';
+	document.getElementById('telegram_bot_chat_id').style.display = 'block';
+}
+
+function hide_telegram_bot_elements() {
+	document.getElementById('telegram_bot_token').style.display = 'none';
+	document.getElementById('telegram_bot_chat_id').style.display = 'none';
+}
 </script>
 
 </body>
